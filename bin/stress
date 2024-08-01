@@ -1,0 +1,58 @@
+set -e
+
+checker=0
+memory=524288  # 512MB
+stack_size=524288  # 512MB
+
+ulimit -v "${memory}"
+ulimit -s "${stack_size}"
+
+clear
+cd ~/Cp/Stress
+
+compile main.cpp
+compile brute.cpp
+compile gen.cpp
+
+if [ $checker = 1 ]; then 
+    compile checker.cpp
+fi
+
+numtest=100
+for((i = 1; i <= $numtest; ++i)); do {
+    echo "Testcase "$i":"
+    echo -e "\e[34m[gen.cpp]\e[0m"
+    ./gen > test.in 
+    echo -e "\e[34m[brute.cpp]\e[0m"
+    ./brute < test.in > test.ans
+    echo -e "\e[34m[main.cpp]\e[0m"
+    ./main  < test.in > test.out
+
+    if [ $checker = 0 ]; then
+        echo -e "\e[34mOK\e[0m"
+    fi
+    # if [ $checker = 0 ]; then
+    #     answer=(diff test.out test.ans)
+    #     echo "E"
+    # else 
+    #     answer=checker
+    # fi
+    # echo $answer
+    # if [ $answer != 0 ]; then
+    #     echo "WA on the following test:"
+    #     cat test.in
+    #     echo "=================="
+    #     echo "Your answer is:"
+    #     cat test.out
+    #     echo "=================="
+    #     echo "Correct answer is:"
+    #     cat test.ans
+    #     break
+    # fi
+    # echo "Passed test: "  $i
+}
+done
+
+rm main
+rm gen
+rm brute

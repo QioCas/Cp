@@ -1,0 +1,28 @@
+#!/usr/bin/python3 
+ 
+from source import util;
+from source.util import Cmt;
+from source.new import MakeCpp;
+from sys import argv, platform;
+import os;
+
+argc = len(argv)
+pwd = '/home/cas/Cp/Code/'
+
+if util.month == 11:
+    util.month = 10
+    util.day += 31
+
+for t in [util.year, util.month, util.day]:
+    pwd += str(t) + '/'
+    if os.path.exists(pwd) == False:
+        os.mkdir(pwd)
+
+if argc == 1:
+    Cmt.error('Too few argument')
+elif argc == 2:
+    MakeCpp(pwd, argv[1])
+elif argc == 3:
+    MakeCpp(pwd, argv[1], argv[2])
+else:
+    Cmt.error('Too many arguments')

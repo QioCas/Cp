@@ -1,0 +1,12 @@
+set -e
+
+memory=524288  # 512MB
+stack_size=524288  # 512MB
+name=${1?"name"}
+exe=${name%.*}
+ARGS="-DLOCAL -I$HOME/Cp/Lib"
+
+ulimit -v "${memory}"
+ulimit -s "${stack_size}"
+
+/usr/bin/time -f "\\n++++++++++++++++++++++\\nMemory usage: %M (KB)\\nTime elapsed: %U (s)" ./$exe
