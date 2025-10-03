@@ -1,0 +1,33 @@
+#!/usr/bin/python3 
+ 
+import os;
+from source import util;
+from source.make import MakeCode;
+from source.make import MakeContest;
+
+import yaml
+
+import argparse
+
+parser = argparse.ArgumentParser(
+                    prog='race',
+                    description='Create a problem',
+                    epilog='')
+
+parser.add_argument('name') 
+parser.add_argument('-t', '--template', default='cpp', type=str, help='template Code. Default is cpp')
+parser.add_argument('-c', '--contest', action='store_true', help='create multiple problems')
+parser.add_argument('-cur', '--current', action='store_true', help='create problem at current directory')
+parser.add_argument('-conf', '--config', default='/home/qiocas/Cp/bin/configs/config.yaml', help="config path")
+parser.add_argument('-n', '--numProbs', default=3, type=int, help='number problems. Default is 3')
+
+args = parser.parse_args()
+cf = yaml.load(open(args.config, "r"), Loader=yaml.Loader)
+
+if args.contest:
+    MakeContest(args.name, args.numProbs, args.template, cf)
+else:
+    if args.current:
+        MakeCode('./{}'.format(args.name), args.name, args.template, cf)
+    else:
+        MakeCode(None, args.name, args.template, cf)

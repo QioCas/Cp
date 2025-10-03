@@ -1,0 +1,30 @@
+#!/usr/bin/bash
+
+ARGS="-DLOCAL"
+C_FLAGS="-std=c++17 -Wfatal-errors -Wall -DLOCAL"
+
+if [ -z "$1" ]; then
+    # Search for a filename in current directory
+    for file in *.cpp; do
+        if [ -f "$file" ]; then
+            name=$file
+            echo -e "[\e[34mINFO\e[0m] Found ${name} file found in current directory"
+            break
+        fi
+    done
+else
+    name=${1?"name"}
+fi
+
+if [ -z "$name" ]; then
+    echo -e "\e[31mNo .cpp file found in current directory.\e[0m"
+    exit 1
+fi
+
+# Support for .cpp files
+if [[ $name != *.cpp ]]; then
+    name="$name.cpp"
+fi
+
+
+g++ $C_FLAGS $ARGS $name -o ${name%.*}
