@@ -4,16 +4,21 @@ import os
 import subprocess
 import shutil
 
+import argparse
+
 # ===== CONFIG =====
 WORKSPACE = "/home/qiocas/Cp/"
 STRESS = os.path.join(WORKSPACE, "Stress/")
 
-CHECKER = 0
-NUM_TEST = 100
+parser = argparse.ArgumentParser(
+                    prog='stress',
+                    description='Stress test',
+                    epilog='')
 
-# Memory / stack limit (512MB)
-MEMORY = 524288 * 1024
-STACK = 524288 * 1024
+parser.add_argument('-n', '--numTest', default=100, type=int, help='number test. Default is 100')
+parser.add_argument('-c', '--checker', action='store_true', help='Enable checker')
+
+args = parser.parse_args()
 
 # ===== Helper functions =====
 def run(cmd, **kwargs):
@@ -36,10 +41,10 @@ def main():
     compile_cpp("main")
     compile_cpp("brute")
     compile_cpp("gen")
-    if CHECKER:
+    if args.checker:
         compile_cpp("checker")
 
-    for i in range(1, NUM_TEST + 1):
+    for i in range(1, args.numTest + 1):
         print(f"\n\033[34m[INFO]\033[0m Testcase {i}:")
         with open("test.in", "w") as f:
             run(["./gen"], stdout=f, check=True)
@@ -50,7 +55,7 @@ def main():
         with open("test.in", "r") as fin, open("test.out", "w") as fout:
             run(["./main"], stdin=fin, stdout=fout, check=True)
 
-        if not CHECKER:
+        if not args.checker:
             diff = subprocess.run(["diff", "-Z", "test.out", "test.ans"])
             if diff.returncode != 0:
                 print("\033[31m[ERROR]\033[0m WA on the following test:")

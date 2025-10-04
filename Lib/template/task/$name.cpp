@@ -36,7 +36,7 @@ struct Tvector<Tp, 1> : public vector<Tp> {
 #define all(x) (x).begin(), (x).end()
 
 #ifdef LOCAL
-#include </mnt/d/Cp/Lib/debug.h>
+#include </home/qiocas/Cp/Lib/debug.h>
 #else
 #define print(...) void($year$month$day) /* ignore */
 #define debug(...) void($year$month$day) /* ignore */
@@ -44,5 +44,9 @@ struct Tvector<Tp, 1> : public vector<Tp> {
 
 signed main() {
     cin.tie(NULL)->sync_with_stdio(false);
-    
+    #define task "$name"
+    if(ifstream(task".inp")) {
+        freopen(task".inp", "r", stdin);
+        freopen(task".out", "w", stdout);
+    }
 }

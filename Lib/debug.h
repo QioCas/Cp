@@ -2,7 +2,7 @@ std::string file() {
     freopen("/home/qiocas/Cp/Stress/test.in", "r", stdin);
     freopen("/home/qiocas/Cp/Stress/test.out", "w", stdout);
     
-    return "I/O from file";
+    return "test.in: /home/qiocas/Cp/Stress/test.in\ntest.out: /home/qiocas/Cp/Stress/test.out";
 }
 
 template<class Tp1, class Tp2>

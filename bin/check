@@ -2,21 +2,23 @@
 
 import os
 import subprocess
+import argparse
 
 # ===== CONFIG =====
 WORKSPACE = "/home/qiocas/Cp/"
 STRESS = os.path.join(WORKSPACE, "Stress/")
 
-CHECKER = 0
-NUM_TEST = 100
+parser = argparse.ArgumentParser(
+                    prog='check',
+                    description='Local test',
+                    epilog='')
 
-# Memory / stack limit (512MB)
-MEMORY = 524288 * 1024
-STACK = 524288 * 1024
+parser.add_argument('-c', '--checker', action='store_true', help='Enable checker')
+
+args = parser.parse_args()
 
 # ===== Helper functions =====
 def run(cmd, **kwargs):
-    """Run shell command with check + output streaming"""
     print(f"\033[35m[EXECUTE]\033[0m {' '.join(cmd)}")
     return subprocess.run(cmd, **kwargs)
 
@@ -30,12 +32,11 @@ def compile_cpp(name):
 # ===== Main =====
 def main():
     os.chdir(STRESS)
-    print(f"STRESS= {STRESS}")
 
     # Compile programs
     compile_cpp("main")
     compile_cpp("brute")
-    if CHECKER:
+    if args.checker:
         compile_cpp("checker")
 
     with open("test.in", "r") as fin, open("test.ans", "w") as fout:
@@ -44,7 +45,7 @@ def main():
     with open("test.in", "r") as fin, open("test.out", "w") as fout:
         run(["./main"], stdin=fin, stdout=fout, check=True)
 
-    if not CHECKER:
+    if not args.checker:
         diff = subprocess.run(["diff", "-Z", "test.out", "test.ans"])
         if diff.returncode != 0:
             print("\033[31m[ERROR]\033[0m WA on the following test:")

@@ -49,7 +49,7 @@ Tp Process() {
 }
 
 signed main() {
-	debug(file());
+	print("{}", file());
 	cin.tie(NULL)->sync_with_stdio(false);
 
 	int testcases = 1; 
