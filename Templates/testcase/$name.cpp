@@ -56,16 +56,13 @@ signed main() {
 	cin >> testcases;
 
 	for(int cas = 1; cas <= testcases; ++cas) {
-    #ifdef LOCAL
-        cerr << "+++++++++++++++++++++++++++\n";
-        cerr << "Case #" << cas << ":\n";
-    #endif
+		print("--- Case #{} start ---", cas);
 		Process<void>();
 		// cout << (Process<bool>() ? "Yes\n" : "No\n");
 		// cout << Process<ll>() << "\n";
 		// auto ans = Process<>();
-    #ifdef LOCAL
-        cerr << "+++++++++++++++++++++++++++\n";
-    #endif
+		print("--- Case #{} end ---", cas);
+		print("time = {}", (double) clock() / CLOCKS_PER_SEC);
+		print("++++++++++++++++++++");
 	}
 }

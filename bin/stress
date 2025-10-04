@@ -31,7 +31,6 @@ def compile_cpp(name):
 # ===== Main =====
 def main():
     os.chdir(STRESS)
-    print(f"STRESS= {STRESS}")
 
     # Compile programs
     compile_cpp("main")
